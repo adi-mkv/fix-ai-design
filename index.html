@@ -3,438 +3,208 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>3 Skills That Make Claude Code & Codex Actually Design Well</title>
+<title>Three Skills That Fix AI Design</title>
+<meta name="description" content="Impeccable, Taste Skill and Emil Kowalski&#x27;s skill: three ways to stop AI agents producing generic frontends.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Geist:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500&family=Geist:wght@400;500&family=Geist+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg-from:   #0f0d13;
-    --bg-to:     #0a0a0c;
-    --bg-raised: #17151e;
-    --bg-inset:  #1e1c27;
-    --border:    #272430;
-    --text:      #f0ede8;
-    --text-2:    #f0ede8;
-    --text-3:    #6b6880;
-    --accent:    #3d2474;
-    --col:       680px;
+    --surface: #17151e;
+    --line: #272430;
+    --text: #f0ede8;
+    --muted: #b5b2aa;
+    --accent: #8f78f2;
+    --tint: rgba(143, 120, 242, 0.14);
+    --tint-text: #c9bcfb;
+    --glass: linear-gradient(#fff 24%, #f7f5f1 50%, #9a978f 84%, #b5b2aa);
+    --mono: 'Geist Mono', monospace;
   }
 
-  html { font-size: 17px; scroll-behavior: smooth; }
+  html { font-size: 17px; color-scheme: dark; }
 
   body {
-    background: linear-gradient(135deg, var(--bg-from) 0%, var(--bg-to) 100%);
-    min-height: 100vh;
+    background:
+      radial-gradient(1200px 520px at 30% -120px, rgba(143, 120, 242, 0.12), transparent 70%) no-repeat,
+      linear-gradient(#13111a, #0f0d13 900px, #0a0a0c 2200px) no-repeat #0a0a0c;
     color: var(--text);
-    font-family: 'Geist', system-ui, sans-serif;
-    font-weight: 300;
-    line-height: 1.75;
+    font-family: 'Geist', sans-serif;
+    line-height: 1.7;
     -webkit-font-smoothing: antialiased;
   }
 
-  #progress {
-    position: fixed;
-    top: 0; left: 0;
-    height: 2px;
-    background: var(--accent);
-    width: 0%;
-    z-index: 200;
-    transition: width 0.08s linear;
-  }
+  a { color: inherit; text-decoration: none; }
+  p { max-width: 65ch; margin-bottom: 1.2rem; }
+  strong { font-weight: 500; }
 
-  .hero {
-    max-width: var(--col);
-    margin: 0 auto;
-    padding: 4rem 1.5rem 0;
-    opacity: 0;
-    animation: fadeUp 0.7s ease 0.1s forwards;
-  }
+  /* Type: display, title, lead, body, label, code */
 
-  h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2.8rem, 7vw, 4.2rem);
-    font-weight: 700;
-    line-height: 1.08;
-    letter-spacing: -0.02em;
-    color: var(--text);
-    margin-bottom: 1.2rem;
-  }
-
-  .subtitle {
-    font-family: 'Geist', sans-serif;
-    font-size: 0.98rem;
-    font-weight: 300;
-    color: var(--text-2);
-    line-height: 1.72;
-    margin-bottom: 1.6rem;
-    max-width: 540px;
-  }
-
-  .byline {
-    display: flex;
-    align-items: center;
-    gap: 0.9rem;
-    padding-bottom: 1.4rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .avatar {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    background: var(--bg-inset);
-    border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--text-2);
-    flex-shrink: 0;
-  }
-
-  .byline-text { font-size: 0.76rem; color: var(--text-3); line-height: 1.5; }
-  .byline-text strong { color: var(--text-2); font-weight: 500; display: block; }
-
-  article {
-    max-width: var(--col);
-    margin: 0 auto;
-    padding: 2.6rem 1.5rem 7rem;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.25s forwards;
-  }
-
-  article p {
-    font-family: 'Geist', sans-serif;
-    font-size: 1rem;
-    font-weight: 300;
-    color: var(--text-2);
-    margin-bottom: 1.5rem;
-    line-height: 1.82;
-  }
-
-  article p:first-of-type { font-size: 1.04rem; }
-
-  .drop-cap::first-letter {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 4.5rem;
-    font-weight: 700;
-    float: left;
-    line-height: 0.8;
-    margin-right: 0.1em;
-    margin-top: 0.12em;
-    color: var(--text);
-  }
-
-  h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.75rem;
-    font-weight: 600;
-    color: var(--text);
-    margin: 3.5rem 0 0.85rem;
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-  }
-
-  .skill-num {
-    display: inline-block;
-    font-family: 'Geist', sans-serif;
-    font-size: 0.65rem;
+  h1, h2, .figure {
+    font-family: 'Inter Tight', sans-serif;
     font-weight: 500;
-    letter-spacing: 0.1em;
-    color: var(--text-3);
+    letter-spacing: -0.035em;
+    line-height: 1.1;
+  }
+
+  h2, .figure, h1 span, h1 em {
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  h2, .figure, h1 span { background-image: var(--glass); }
+
+  /* --fit is the width of the longest title line in em */
+  h1 {
+    font-size: min(clamp(2.8rem, 8.4vw, 6.6rem), calc((100vw - 3rem) / var(--fit)));
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+    padding-bottom: 0.08em;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Extend gradients below the baseline; margins preserve the existing spacing. */
+  h1 span, h2 { padding-bottom: 0.15em; }
+  h1 span { display: block; white-space: nowrap; margin-bottom: -0.15em; }
+  h1 em { font-style: normal; background-image: linear-gradient(#ece7ff, #c9bcfb 30%, var(--accent) 72%, #6a52d6); }
+
+  h2, .figure { font-size: 2.2rem; }
+  h2 { margin-bottom: calc(1rem - 0.15em); }
+  .figure { margin-bottom: 1rem; }
+
+  .lead { font-size: 1.2rem; line-height: 1.55; max-width: 34rem; }
+
+  .label {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.07em;
     text-transform: uppercase;
-    margin-bottom: 0.4rem;
+    color: var(--muted);
   }
 
-  /* Code block */
-  .code-wrap {
-    background: var(--bg-raised);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-    margin: 2.8rem 0;
-  }
+  code, pre { font-family: var(--mono); font-size: 0.8rem; }
+  code { background: var(--tint); color: var(--tint-text); padding: 0.08em 0.4em; border-radius: 4px; }
+  pre { padding: 1.3rem 1.2rem; line-height: 1.75; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .tag { display: block; width: fit-content; margin-bottom: 1.25rem; padding: 0.25rem 0.55rem; border-radius: 6px; background: var(--tint); color: var(--tint-text); }
 
-  .code-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.65rem 1.1rem;
-    border-bottom: 1px solid var(--border);
-    font-family: 'Geist', sans-serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.06em;
-    color: var(--text-3);
-  }
+  /* Layout */
 
-  .copy-btn {
-    position: relative;
-    background: none;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    color: var(--text-3);
-    font-family: 'Geist', sans-serif;
-    font-size: 0.65rem;
-    letter-spacing: 0.05em;
-    padding: 0.25rem 0.65rem;
-    cursor: pointer;
-    overflow: hidden;
-    transition: color 0.2s, border-color 0.2s, background 0.2s;
-    min-width: 52px;
-  }
+  main, footer p { max-width: 1120px; margin: 0 auto; padding: 0 1.5rem; }
 
-  .copy-btn:hover {
-    color: var(--text-2);
-    border-color: var(--text-3);
-  }
+  .hero { padding: 5rem 0 3rem; border-bottom: 1px solid; border-image: linear-gradient(90deg, var(--line) 60%, transparent) 1; }
+  .byline { display: flex; gap: 0.9rem; margin-top: 2rem; }
+  .byline span + span::before { content: '·'; margin-right: 0.9rem; }
 
-  .copy-btn .btn-label {
-    display: block;
-    transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.18s ease;
-  }
+  section { margin: 3.5rem 0; }
+  .split { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 3rem; align-items: start; }
+  .split > *, .cards > * { min-width: 0; }
 
-  .copy-btn.copied {
-    color: #9d8ec4;
-    border-color: #5a4490;
-    background: rgba(61, 36, 116, 0.15);
-  }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .cards .card { display: flex; flex-direction: column; padding: 1.75rem; }
 
-  .copy-btn.copied .btn-label {
-    transform: scale(1.08);
-  }
+  .media { display: block; width: 100%; border-radius: 12px; margin-bottom: 1.5rem; }
+  .video { display: block; width: min(100%, 360px); aspect-ratio: 9 / 16; margin: 0 auto; border-radius: 12px; }
 
-  .copy-btn.fading {
-    transition: color 0.6s ease, border-color 0.6s ease, background 0.6s ease;
-    color: var(--text-3);
-    border-color: var(--border);
-    background: none;
-  }
+  .code { margin-bottom: 1rem; }
+  .code header { display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 0.9rem 0.7rem 1.1rem; border-bottom: 1px solid var(--line); }
+  .code button { min-width: 70px; padding: 0.4rem 0.75rem; border: 0; border-radius: 6px; background: var(--text); color: #0a0a0c; cursor: pointer; }
+  .code button:hover { background: #fff; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 
-  pre {
-    padding: 1.4rem 1.2rem;
-    overflow-x: auto;
-    font-family: 'Geist Mono', 'Fira Code', 'Courier New', monospace;
-    font-size: 0.79rem;
-    line-height: 1.75;
-    color: var(--text-2);
-    white-space: pre-wrap;
-    word-break: break-word;
-  }
+  .rows { margin-bottom: 1.5rem; border-bottom: 1px solid var(--line); }
+  .rows div { display: grid; grid-template-columns: 7.5rem 1fr; gap: 1rem; align-items: baseline; padding: 0.6rem 0; border-top: 1px solid var(--line); }
 
-  pre .comment { color: #6b6880; }
+  .links { margin-top: auto; }
+  .links a { display: flex; justify-content: space-between; padding: 0.8rem 0; border-top: 1px solid var(--line); }
+  .links a::after { content: '↗'; color: var(--muted); }
+  .links a:hover, .links a:hover::after { color: var(--tint-text); }
 
-  .link-row {
-    display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-    margin-top: 0.25rem;
-    margin-bottom: 1.75rem;
-  }
+  .prices { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; margin: 2.5rem 0 1.25rem; }
+  .prices div { display: flex; flex-direction: column; gap: 0.35rem; padding: 1.25rem 1.4rem; background: var(--surface); }
+  .prices .figure { margin: 0.2rem 0 0; }
+  .prices .ours { background: #221d33; }
 
-  .pill-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.3rem 0.85rem;
-    border-radius: 99px;
-    border: 1px solid var(--border);
-    background: var(--bg-raised);
-    font-family: 'Geist', sans-serif;
-    font-size: 0.7rem;
-    font-weight: 400;
-    color: var(--text-3);
-    text-decoration: none;
-    letter-spacing: 0.04em;
-    transition: color 0.18s, border-color 0.18s;
-  }
+  .source { border-bottom: 1px solid var(--line); }
+  .source:hover { color: var(--tint-text); }
 
-  .pill-link:hover {
-    color: var(--text-2);
-    border-color: var(--text-3);
-  }
+  footer { padding: 1.6rem 0; border-top: 1px solid var(--line); }
 
-  .skill-img {
-    width: 100%;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    display: block;
-    margin: 1.6rem 0 1.4rem;
-    background: var(--bg-raised);
-  }
-
-  .divider {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 3rem 0;
-  }
-
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 1.8rem 1.5rem;
-    text-align: center;
-    font-size: 0.7rem;
-    color: var(--text-3);
-    letter-spacing: 0.06em;
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(12px); }
-    to   { opacity: 1; transform: translateY(0); }
+  @media (max-width: 860px) {
+    .split, .cards { grid-template-columns: 1fr; gap: 2rem; }
+    .prices { grid-template-columns: 1fr 1fr; }
   }
 
   @media (max-width: 600px) {
-    h1 { font-size: 2.4rem; }
-    .hero { padding-top: 2.5rem; padding-left: 1.5rem; padding-right: 1.5rem; }
+    .hero { padding: 3.5rem 0 2.5rem; }
+    .cards .card { padding: 1.4rem; }
+    h2, .figure { font-size: 1.8rem; }
+    .rows div { grid-template-columns: 6rem 1fr; }
   }
 </style>
 </head>
 <body>
 
-<div id="progress"></div>
+<main>
 
-<section class="hero">
-  <h1>Three Skills That Fix AI Design</h1>
-  <p class="subtitle">Claude Code and Codex default to the same tired patterns. These skills break that.</p>
-  <div class="byline">
-    <div class="avatar">A</div>
-    <div class="byline-text">
-      <strong>Adi</strong>
-      3 min read &nbsp;·&nbsp; May 2026
-    </div>
-  </div>
-</section>
+  <header class="hero">
+    <h1 style="--fit: 6.6"><span>Three skills</span> <span>that fix AI <em>design</em></span></h1>
+    <p class="lead">Claude Code and Codex fall back on the same patterns. These three skills fix that.</p>
+    <div class="byline label"><span>Adi</span><span>2 min read</span></div>
+  </header>
 
-<article>
+  <section>
+<p>Left alone, coding agents produce the same frontend every time: Inter, a purple-to-blue gradient, cards inside cards and a glow somewhere. It works, and it looks generated.</p>
+<p>Each skill below covers one layer: design rules, taste and motion.</p>
+  </section>
 
-  <p class="drop-cap">By default, Claude Code and Codex produce the same frontend every time. Inter font, purple-to-blue gradient, cards nested in cards, a glowing accent somewhere. Functional, forgettable, and immediately recognizable as AI output.</p>
+  <section class="split">
+<div><span class="label tag">Design rules</span><h2>Impeccable</h2><p>By Paul Bakaus, creator of jQuery UI. It builds on Anthropic's <code>frontend-design</code> skill with 23 commands, such as <code>/audit</code>, <code>/polish</code> and <code>/animate</code>, and 27 rules for what not to generate.</p>
+<p>Brand mode is for marketing pages and product mode is for app UI. It works with Claude Code, Codex CLI, Cursor and Gemini CLI.</p><div class="links"><a href="https://impeccable.style" target="_blank" rel="noopener">impeccable.style</a><a href="https://github.com/pbakaus/impeccable" target="_blank" rel="noopener">GitHub</a></div></div>
+<div><img class="media" src="https://opengraph.githubassets.com/1/pbakaus/impeccable" alt="Impeccable on GitHub" loading="lazy"><div class="card code">
+      <header><span class="label">Install</span><button type="button" class="label" aria-live="polite" onclick="copyCode(this)">Copy</button></header>
+      <pre>npx skills add pbakaus/impeccable</pre>
+    </div></div>
+  </section>
 
-  <p>Three skills fix this. Each targets a different layer of the problem: visual identity, design sophistication, and motion quality. Run them together and you get output that looks deliberate.</p>
+  <section class="split">
+<div><span class="label tag">Taste</span><h2>Taste Skill</h2><p>By Leonxlnx, with variants including minimalist, brutalist and high-end, and three 1–10 dials: <code>DESIGN_VARIANCE</code>, <code>MOTION_INTENSITY</code> and <code>VISUAL_DENSITY</code>.</p>
+<p>The agent reads your brief and picks a direction before it builds anything.</p><div class="links"><a href="https://www.tasteskill.dev" target="_blank" rel="noopener">tasteskill.dev</a><a href="https://github.com/Leonxlnx/taste-skill" target="_blank" rel="noopener">GitHub</a></div></div>
+<div><img class="media" src="https://www.tasteskill.dev/og-image.jpg" alt="Taste Skill" loading="lazy"><div class="card code">
+      <header><span class="label">Install</span><button type="button" class="label" aria-live="polite" onclick="copyCode(this)">Copy</button></header>
+      <pre>npx skills add https://github.com/Leonxlnx/taste-skill --skill &quot;design-taste-frontend&quot;</pre>
+    </div></div>
+  </section>
 
-  <hr class="divider">
+  <section class="split">
+<div><span class="label tag">Motion</span><h2>Emil Kowalski's skill</h2><p>Emil Kowalski is a design engineer at Linear and made Sonner, Vaul and animations.dev. His skill has 43 rules on easing, timing (150–250 ms for small interactions), animating only transform and opacity, springs and reduced motion.</p>
+<p>He suggests loading it when you need it rather than keeping it always on.</p><div class="links"><a href="https://emilkowal.ski/skill" target="_blank" rel="noopener">emilkowal.ski/skill</a></div></div>
+<div><img class="media" src="https://emilkowal.ski/_next/image?url=%2Fskill.jpg&amp;w=1920&amp;q=75" alt="Emil Kowalski&#x27;s skill reviewing animations in Claude Code" loading="lazy"><div class="card code">
+      <header><span class="label">Install</span><button type="button" class="label" aria-live="polite" onclick="copyCode(this)">Copy</button></header>
+      <pre>npx skills add emilkowalski/skill</pre>
+    </div></div>
+  </section>
 
-  <span class="skill-num">01 / 03</span>
-  <h2>Impeccable</h2>
+</main>
 
-  <p>Created by Paul Bakaus (former Google Developer Advocate, creator of jQuery UI), Impeccable is an open-source skill built directly on top of Anthropic's own <code>frontend-design</code> skill. It ships with 23 slash commands — <code>/audit</code>, <code>/polish</code>, <code>/critique</code>, <code>/animate</code>, <code>/bolder</code>, <code>/quieter</code>, and more — plus 27 deterministic anti-pattern rules that tell the model exactly what not to generate. It operates in two modes: brand (marketing, portfolios) and product (app UI, dashboards), since a landing page and a dashboard live by contradictory rules. Works with Cursor, Claude Code, Gemini CLI, and Codex CLI.</p>
-
-  <img class="skill-img" src="https://impeccable.style/og-image.jpg" alt="Impeccable — design skills for AI harnesses" loading="lazy">
-
-  <div class="link-row">
-    <a class="pill-link" href="https://impeccable.style" target="_blank">↗ impeccable.style</a>
-    <a class="pill-link" href="https://github.com/pbakaus/impeccable" target="_blank">↗ GitHub</a>
-  </div>
-
-  <div class="code-wrap">
-    <div class="code-header">
-      <span>INSTALL</span>
-      <button class="copy-btn" onclick="copyCode(this, 'cmd-impeccable')">
-        <span class="btn-label">Copy</span>
-      </button>
-    </div>
-    <pre id="cmd-impeccable">npx skills add pbakaus/impeccable</pre>
-  </div>
-
-  <hr class="divider">
-
-  <span class="skill-num">02 / 03</span>
-  <h2>Taste Skill</h2>
-
-  <p>Built by Leonxlnx, Taste Skill is the most-starred third-party design skill for frontend on GitHub, sitting at over 18,000 stars. Rather than a single set of rules, it's a suite of 11 specialized variants — including minimalist, brutalist, high-end, and elite modes — with three numeric dials you set at the top of the file: <code>DESIGN_VARIANCE</code> (1–10, centered to asymmetric), <code>MOTION_INTENSITY</code> (1–10, hover to scroll-triggered), and <code>VISUAL_DENSITY</code> (1–10, airy to dense). The agent reads the brief first and infers design direction before generating anything. Framework agnostic across Cursor, Claude Code, Codex, Gemini CLI, v0, and Lovable.</p>
-
-  <img class="skill-img" src="https://www.tasteskill.dev/og-image.jpg" alt="Taste Skill — the anti-slop frontend framework for AI agents" loading="lazy">
-
-  <div class="link-row">
-    <a class="pill-link" href="https://www.tasteskill.dev" target="_blank">↗ tasteskill.dev</a>
-    <a class="pill-link" href="https://github.com/Leonxlnx/taste-skill" target="_blank">↗ GitHub</a>
-  </div>
-
-  <div class="code-wrap">
-    <div class="code-header">
-      <span>INSTALL</span>
-      <button class="copy-btn" onclick="copyCode(this, 'cmd-taste')">
-        <span class="btn-label">Copy</span>
-      </button>
-    </div>
-    <pre id="cmd-taste">npx skills add https://github.com/Leonxlnx/taste-skill --skill "design-taste-frontend"</pre>
-  </div>
-
-  <hr class="divider">
-
-  <span class="skill-num">03 / 03</span>
-  <h2>Emil Kowalski's Skill</h2>
-
-  <p>Emil Kowalski is a design engineer at Linear and the creator of Sonner, Vaul, and the <a class="pill-link" href="https://animations.dev" target="_blank" style="display:inline;padding:0;border:none;background:none;border-radius:0;font-size:inherit;color:var(--text-3);text-decoration:underline;text-underline-offset:3px;">animations.dev</a> course. His official skill file distills that work into 43 rules across 7 categories: easing selection (ease-out for entrances, custom Bézier over built-in curves), timing windows (150–250ms for micro-interactions, never over 300ms for standard transitions), GPU-only properties (transform and opacity, never width or height), spring physics for organic motion, and accessibility via <code>prefers-reduced-motion</code>. He recommends loading it on a case-by-case basis rather than always-on.</p>
-
-  <img class="skill-img" src="https://emilkowal.ski/_next/image?url=%2Fskill.jpg&w=1920&q=75" alt="Emil Kowalski's skill in action — reviewing animations in Claude Code" loading="lazy">
-
-  <div class="link-row">
-    <a class="pill-link" href="https://emilkowal.ski/skill" target="_blank">↗ emilkowal.ski/skill</a>
-  </div>
-
-  <div class="code-wrap">
-    <div class="code-header">
-      <span>INSTALL</span>
-      <button class="copy-btn" onclick="copyCode(this, 'cmd-emil')">
-        <span class="btn-label">Copy</span>
-      </button>
-    </div>
-    <pre id="cmd-emil">npx skills add emilkowalski/skill</pre>
-  </div>
-
-  <hr class="divider">
-
-  <p>Layer all three and your agent has design vocabulary, aesthetic taste, and proper motion — the three things that separate something that looks built from something that looks generated. Comment <strong>DESIGN</strong> and I'll send them over.</p>
-
-</article>
-
-<footer>
-  &copy; 2026 &nbsp;·&nbsp; All rights reserved
-</footer>
+<footer><p class="label">&copy; 2026 Adi &nbsp;·&nbsp; All rights reserved</p></footer>
 
 <script>
-  const bar = document.getElementById('progress');
-  window.addEventListener('scroll', () => {
-    const total = document.body.scrollHeight - window.innerHeight;
-    bar.style.width = (window.scrollY / total * 100) + '%';
-  }, { passive: true });
-
-  let resetTimers = {};
-
-  function copyCode(btn, id) {
-    const text = document.getElementById(id).textContent;
-    const label = btn.querySelector(".btn-label");
-
-    if (resetTimers[id]) clearTimeout(resetTimers[id]);
-    btn.classList.remove("fading");
-    label.textContent = "Copied!";
-    btn.classList.add("copied");
-
-    resetTimers[id] = setTimeout(() => {
-      btn.classList.remove("copied");
-      btn.classList.add("fading");
-      setTimeout(() => {
-        label.textContent = "Copy";
-        btn.classList.remove("fading");
-      }, 620);
-    }, 1600);
-
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
-    } else {
-      fallbackCopy(text);
+  async function copyCode(button) {
+    button.disabled = true;
+    try {
+      await navigator.clipboard.writeText(button.closest('.code').querySelector('pre').textContent);
+      button.textContent = 'Copied';
+    } catch {
+      button.textContent = 'Copy failed';
     }
-  }
-
-  function fallbackCopy(text) {
-    const ta = document.createElement("textarea");
-    ta.value = text;
-    ta.style.cssText = "position:fixed;top:0;left:0;opacity:0;pointer-events:none;";
-    document.body.appendChild(ta);
-    ta.focus(); ta.select();
-    try { document.execCommand("copy"); } catch(e) {}
-    document.body.removeChild(ta);
+    setTimeout(() => {
+      button.textContent = 'Copy';
+      button.disabled = false;
+    }, 1600);
   }
 </script>
 
